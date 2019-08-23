@@ -1,0 +1,19 @@
+{
+  "name": "authservergpschat",
+  "version": "1.0.0",
+  "description": "A simple Authentication Server that authenticates users that wants to use the app GPSChat",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CarloP95/AuthenticationServerGPSChat.git"
+  },
+  "author": "CarloP95 (carlop95@hotmail.it)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CarloP95/AuthenticationServerGPSChat/issues"
+  },
+  "homepage": "https://github.com/CarloP95/AuthenticationServerGPSChat#readme"
+}

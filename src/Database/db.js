@@ -1,0 +1,73 @@
+const fs        = require('fs');
+const crypto    = require('crypto');
+const sqlite3   = require('sqlite3').verbose();
+var db          = new sqlite3.cached.Database('');     //or :memory: to a faster db.
+
+const tableName       = 'Users', column_UserID = 'UserID', column_pwd = 'Password';
+
+// It is necessary to wrap inside a serialize
+db.serialize( _ => {
+  db.run(`CREATE TABLE ${tableName}(
+          ${column_UserID} TEXT UNIQUE,
+          ${column_pwd}    TEXT
+  );`);
+});
+
+//Init with test users.
+const usersAndCredentials = JSON.parse(fs.readFileSync('./config/auth.json')).users;
+var   queryHead           = `INSERT INTO ${tableName} (${column_UserID}, ${column_pwd}) VALUES`;
+var   queries             = [];
+
+for (let userAndCredential of usersAndCredentials) {
+  queries.push(`${queryHead}('${userAndCredential.id}', '${getHash(userAndCredential.pwd)}');`);
+}
+
+// Execute builded queries
+db.parallelize( _ => {
+  for (query of queries) {
+    db.run(query);
+  }
+});
+
+
+function getHash(string, algorithm, inputEncoding) {
+  const chosenAlgorithm        = 'sha1';
+  const output_encoding        = 'hex' ;
+  const defaultInput_encoding  = 'utf8';
+
+  return crypto.createHash(algorithm || chosenAlgorithm)
+    .update(string, inputEncoding || defaultInput_encoding)
+    .digest(output_encoding);
+}
+
+
+function authenticateUser(userId, pwd) {
+  const hash = getHash(pwd);
+
+  return new Promise( (resolve, reject) => {
+    db.get(`SELECT ${column_UserID}, ${column_pwd} FROM ${tableName} WHERE ${column_pwd} == '${hash}' AND ${column_UserID} == '${userId}'`,
+      (err, row) => {
+        if (err)
+          throw `An Error occurred during searching the DB. ${err}`;
+        console.log(row);
+
+        if (row)
+          resolve({authenticated: true});
+
+        else
+          resolve({authenticated: false});
+
+        reject(row);
+
+      });
+  });
+
+
+}
+
+/* Usage
+ * var results = authenticateUser('3331114444', 'xxxxxxxxxx');
+ * results.then( res => {
+ *  console.log(res);
+ * });
+ * */

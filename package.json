@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/CarloP95/AuthenticationServerGPSChat/issues"
   },
-  "homepage": "https://github.com/CarloP95/AuthenticationServerGPSChat#readme"
+  "homepage": "https://github.com/CarloP95/AuthenticationServerGPSChat#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "sqlite3": "^4.1.0"
+  }
 }

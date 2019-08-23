@@ -1,13 +1,13 @@
 const fs        = require('fs');
 const crypto    = require('crypto');
 const sqlite3   = require('sqlite3').verbose();
-var db          = new sqlite3.cached.Database('');     //or :memory: to a faster db.
+var db          = new sqlite3.cached.Database('usr.db');     //or :memory: to a faster db.
 
 const tableName       = 'Users', column_UserID = 'UserID', column_pwd = 'Password';
 
 // It is necessary to wrap inside a serialize
 db.serialize( _ => {
-  db.run(`CREATE TABLE ${tableName}(
+  db.run(`CREATE TABLE IF NOT EXISTS ${tableName}(
           ${column_UserID} TEXT UNIQUE,
           ${column_pwd}    TEXT
   );`);
@@ -15,7 +15,7 @@ db.serialize( _ => {
 
 //Init with test users.
 const usersAndCredentials = JSON.parse(fs.readFileSync('./config/auth.json')).users;
-var   queryHead           = `INSERT INTO ${tableName} (${column_UserID}, ${column_pwd}) VALUES`;
+var   queryHead           = `INSERT OR IGNORE INTO ${tableName} (${column_UserID}, ${column_pwd}) VALUES`;
 var   queries             = [];
 
 for (let userAndCredential of usersAndCredentials) {

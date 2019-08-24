@@ -2,6 +2,7 @@ const apis     = require('./Database/db.js');
 const authApp  = (require('express'))();
 const parser   = require('body-parser').json();
 
+const port     = process.env.PORT || 3000;
 
 authApp.use(parser);
 
@@ -42,4 +43,6 @@ authApp.post('/auth', (req, res) => {
 
 });
 
-authApp.listen(3000);
+authApp.listen(port, _ => {
+  console.log('Server is running at port: ' + port);
+});

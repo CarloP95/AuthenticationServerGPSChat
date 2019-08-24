@@ -4,7 +4,8 @@
   "description": "A simple Authentication Server that authenticates users that wants to use the app GPSChat",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js"
+    "test": "node src/index.js",
+    "start": "node src/index.js"
   },
   "repository": {
     "type": "git",

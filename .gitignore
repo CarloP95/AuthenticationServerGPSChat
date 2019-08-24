@@ -62,3 +62,6 @@ typings/
 
 # .db files
 *.db
+
+# Private key/tokens
+config/auth.json

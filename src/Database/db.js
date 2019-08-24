@@ -51,14 +51,14 @@ function getHash(string, algorithm, inputEncoding) {
 function authenticateUser(userId, pwd) {
 
   const hash = getHash(pwd);
-
+  
   return new Promise( (resolve, reject) => {
 
     db.get(`SELECT ${column_UserID}, ${column_pwd} FROM ${tableName} WHERE ${column_pwd} == '${hash}' AND ${column_UserID} == '${userId}'`,
       (err, row) => {
         if (err)
           throw `An Error occurred during searching the DB. ${err}`;
-        console.log(row);
+
 
         if (row)
           resolve({authenticated: true});

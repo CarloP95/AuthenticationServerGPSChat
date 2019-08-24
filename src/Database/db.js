@@ -40,11 +40,20 @@ function getHash(string, algorithm, inputEncoding) {
     .digest(output_encoding);
 }
 
+/* Public API used for authenticate users that are already registered.
+ * Usage
+ * var results = authenticateUser('3331114444', 'xxxxxxxxxx');
+ * results.then( res => {
+ *  console.log(res);
+ * });
+ * */
 
 function authenticateUser(userId, pwd) {
+
   const hash = getHash(pwd);
 
   return new Promise( (resolve, reject) => {
+
     db.get(`SELECT ${column_UserID}, ${column_pwd} FROM ${tableName} WHERE ${column_pwd} == '${hash}' AND ${column_UserID} == '${userId}'`,
       (err, row) => {
         if (err)
@@ -60,14 +69,10 @@ function authenticateUser(userId, pwd) {
         reject(row);
 
       });
-  });
 
+  });
 
 }
 
-/* Usage
- * var results = authenticateUser('3331114444', 'xxxxxxxxxx');
- * results.then( res => {
- *  console.log(res);
- * });
- * */
+
+ exports.authenticateUser = authenticateUser;

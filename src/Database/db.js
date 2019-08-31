@@ -1,6 +1,7 @@
 const fs        = require('fs');
-const crypto    = require('crypto');
 const sqlite3   = require('sqlite3').verbose();
+const getHash   = require('../Utils/utils.js').getHash;
+
 var db          = new sqlite3.cached.Database('usr.db');     //or :memory: to a faster db.
 
 const tableName       = 'Users', column_UserID = 'UserID', column_pwd = 'Password';
@@ -29,16 +30,6 @@ db.parallelize( _ => {
   }
 });
 
-
-function getHash(string, algorithm, inputEncoding) {
-  const chosenAlgorithm        = 'sha1';
-  const output_encoding        = 'hex' ;
-  const defaultInput_encoding  = 'utf8';
-
-  return crypto.createHash(algorithm || chosenAlgorithm)
-    .update(string, inputEncoding || defaultInput_encoding)
-    .digest(output_encoding);
-}
 
 /* Public API used for authenticate users that are already registered.
  * Usage

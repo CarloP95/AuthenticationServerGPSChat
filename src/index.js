@@ -1,4 +1,4 @@
-const apis     = require('./Database/db.js');
+const dbApi    = require('./Database/db.js');
 const authApp  = (require('express'))();
 const parser   = require('body-parser').json();
 const tk       = require('./Authentication/auth.js');
@@ -7,7 +7,9 @@ const port     = process.env.PORT || 3000;
 
 authApp.use(parser);
 
-
+/***************
+***** GET ******
+****************/
 authApp.get('/', (req, res) => {
   res.end('You should redirect to /auth');
 });
@@ -17,7 +19,13 @@ authApp.get('/auth', (req, res) => {
   res.end('Authentication Server is online');
 });
 
+authApp.get('/register', (req, res) => {
+  res.end('Do a Post on the same endpoint to register');
+});
 
+/***************
+***** POST ******
+****************/
 authApp.post('/', (req, res) => {
   res.end('You are doing something wrong... Make a post to /auth');
 });
@@ -35,7 +43,7 @@ authApp.post('/auth', (req, res) => {
         if (!body.timestamp)
             body.timestamp = (new Date).toUTCString();
 
-        const authenticated = apis.authenticateUser(body.usr, body.pwd).then( auth => {
+        const authenticated = dbApi.authenticateUser(body.usr, body.pwd).then( auth => {
 
 
             if (auth.authenticated)
@@ -52,6 +60,31 @@ authApp.post('/auth', (req, res) => {
 
         });
 
+    }
+
+});
+
+authApp.post('/register', (req, res) => {
+
+    if ( req.headers['content-type'] != 'application/json')
+        res.end('Only ContentType: application/json is allowed.');
+
+    else {
+
+        var body = req.body;
+        
+        if (!body.timestamp)
+            body.timestamp = (new Date).toUTCString();
+
+        dbApi.registerUser(body.usr, body.pwd).then( result => {
+
+            res.end(JSON.stringify(result));
+
+        })
+        .catch( err => {
+            console.log(err);
+            res.end(JSON.stringify({"text": "There was an error on the server. Check err field.", "err": err}));
+        });
     }
 
 });

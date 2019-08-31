@@ -4,7 +4,7 @@ const getHash   = require('../Utils/utils.js').getHash;
 
 var db          = new sqlite3.cached.Database('usr.db');     //or :memory: to a faster db.
 
-const tableName       = 'Users', column_UserID = 'UserID', column_pwd = 'Password';
+const tableName = 'Users', column_UserID = 'UserID', column_pwd = 'Password';
 
 // It is necessary to wrap inside a serialize
 db.serialize( _ => {
@@ -75,7 +75,9 @@ function registerUser(userId, pwd) {
 		
 		db.serialize( _ => {
 
-				db.run(`${queryHead_insert_safe}(${userId}, ${hash});`, (err) => {
+				const builded_query = `${queryHead_insert_safe}('${userId}', '${hash}');`;
+				
+				db.run(builded_query, (err) => {
 					if (err)
 						reject(err);
 
@@ -89,7 +91,7 @@ function registerUser(userId, pwd) {
 
 }
 
-exports = {
+module.exports = {
 
 	authenticateUser: authenticateUser,
 	registerUser    : registerUser

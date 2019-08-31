@@ -5,7 +5,9 @@ const tk       = require('./Authentication/auth.js');
 
 const port     = process.env.PORT || 3000;
 
+
 authApp.use(parser);
+
 
 /***************
 ***** GET ******

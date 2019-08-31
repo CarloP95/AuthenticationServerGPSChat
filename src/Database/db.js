@@ -4,6 +4,10 @@ const getHash   = require('../Utils/utils.js').getHash;
 
 var db          = new sqlite3.cached.Database('usr.db');     //or :memory: to a faster db.
 
+//TODO: Must create a new DB, maybe in memory to be faster, to store token.
+//TODO: Must expose API to request if tokens are valid.
+//Later TODO: Must create a mock token to let it pass around the network.
+
 const tableName = 'Users', column_UserID = 'UserID', column_pwd = 'Password';
 
 // It is necessary to wrap inside a serialize

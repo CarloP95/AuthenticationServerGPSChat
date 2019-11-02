@@ -17,8 +17,12 @@ authApp.get('/', (req, res) => {
 });
 
 
-authApp.get('/auth', (req, res) => {
+authApp.get('/ping', (req, res) => {
   res.end('Authentication Server is online');
+});
+
+authApp.get('/auth', (req, res) => {
+  res.end('Will check if user is authenticated');
 });
 
 authApp.get('/register', (req, res) => {

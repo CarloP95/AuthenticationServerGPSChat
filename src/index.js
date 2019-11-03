@@ -39,8 +39,8 @@ authApp.post('/', (req, res) => {
 
 authApp.post('/auth', (req, res) => {
 
-    if ( req.headers['content-type'] != 'application/json')
-        res.end('Only ContentType: application/json is allowed.');
+    if ( !req.headers['content-type'].includes('application/json') )
+        res.status(400).end('Only ContentType: application/json is allowed.');
 
     else {
 
@@ -72,7 +72,7 @@ authApp.post('/auth', (req, res) => {
 
 authApp.post('/register', (req, res) => {
 
-    if ( req.headers['content-type'] != 'application/json')
+    if ( !req.headers['content-type'].includes('application/json') )
         res.end('Only ContentType: application/json is allowed.');
 
     else {

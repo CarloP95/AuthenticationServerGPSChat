@@ -87,7 +87,7 @@ function registerUser(userId, pwd, nickname) {
 		
 		db.serialize( _ => {
 
-				const builded_query = `${queryHead_insert_safe}('${userId}', '${hash}', ${nickname});`;
+				const builded_query = `${queryHead_insert_safe}('${userId}', '${hash}', '${nickname}');`;
 				
 				db.run(builded_query, (err) => {
 					if (err)

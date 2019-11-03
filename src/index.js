@@ -54,7 +54,7 @@ authApp.post('/auth', (req, res) => {
 
             if (auth.authenticated)
                 tk.provideToken(body).then( token => {
-                    res.end(JSON.stringify({"authenticated": true, "token": token }));
+                    res.end(JSON.stringify({"authenticated": true, "token": token, "nickname": auth.nick }));
                 })
                 .catch(err => {
                     console.log(err);

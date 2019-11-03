@@ -9,6 +9,9 @@ var db          = new sqlite3.cached.Database('usr.db');     //or :memory: to a 
 //Later TODO: Must create a mock token to let it pass around the network.
 
 const tableName = 'Users', column_UserID = 'UserID', column_pwd = 'Password', column_NickName = 'Nickname';
+var   queryHead_insert      = `INSERT OR IGNORE INTO ${tableName} (${column_UserID}, ${column_pwd}, ${column_NickName}) VALUES`;
+var   queryHead_insert_safe = `INSERT INTO ${tableName} (${column_UserID}, ${column_pwd}, ${column_NickName}) VALUES`;
+
 
 function init() {
 	// It is necessary to wrap inside a serialize
@@ -22,8 +25,6 @@ function init() {
 
 	//Init with test users.
 	const usersAndCredentials   = JSON.parse(fs.readFileSync('./config/auth.json')).users;
-	var   queryHead_insert      = `INSERT OR IGNORE INTO ${tableName} (${column_UserID}, ${column_pwd}, ${column_NickName}) VALUES`;
-	var   queryHead_insert_safe = `INSERT INTO ${tableName} (${column_UserID}, ${column_pwd}, ${column_NickName}) VALUES`;
 	var   queries               = [];
 
 	for (let userAndCredential of usersAndCredentials) {

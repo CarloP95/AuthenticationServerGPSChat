@@ -82,14 +82,14 @@ authApp.post('/register', (req, res) => {
         if (!body.timestamp)
             body.timestamp = (new Date).toUTCString();
 
-        dbApi.registerUser(body.usr, body.pwd).then( result => {
+        dbApi.registerUser(body.usr, body.pwd, body.nick).then( result => {
 
             res.end(JSON.stringify(result));
 
         })
         .catch( err => {
             console.log(err);
-            res.end(JSON.stringify({"text": "There was an error on the server. Check err field.", "err": err}));
+            res.end(JSON.stringify({"text": "There was an error on the server. Check err field.", "err": JSON.stringify(err)}));
         });
     }
 

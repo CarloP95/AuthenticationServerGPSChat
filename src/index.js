@@ -58,11 +58,11 @@ authApp.post('/auth', (req, res) => {
                 })
                 .catch(err => {
                     console.log(err);
-                    res.end(JSON.stringify({"text": "There was an error on the server. Check err field.", "authenticated": true, "err": err}));
+                    res.status(500).end(JSON.stringify({"text": "There was an error on the server. Check err field.", "authenticated": false, "err": err}));
                 });
 
             else
-                res.end(JSON.stringify({"authenticated": false}));
+                res.status(404).end(JSON.stringify({"authenticated": false}));
 
         });
 
@@ -73,7 +73,7 @@ authApp.post('/auth', (req, res) => {
 authApp.post('/register', (req, res) => {
 
     if ( !req.headers['content-type'].includes('application/json') )
-        res.end('Only ContentType: application/json is allowed.');
+        res.status(400).end('Only ContentType: application/json is allowed.');
 
     else {
 
@@ -89,7 +89,7 @@ authApp.post('/register', (req, res) => {
         })
         .catch( err => {
             console.log(err);
-            res.end(JSON.stringify({"text": "There was an error on the server. Check err field.", "err": JSON.stringify(err)}));
+            res.status(500).end(JSON.stringify({"text": "There was an error on the server. Check err field.", "err": JSON.stringify(err)}));
         });
     }
 

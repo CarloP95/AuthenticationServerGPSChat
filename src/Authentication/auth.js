@@ -20,11 +20,12 @@ function generateToken (requestBody) {
 			
 			var curDate 	  = new Date();
 			var formattedDate = `${curDate.toJSON()}`;
+			var fakeToken 	  = getHash(token);
 
 			console.log(`[${formattedDate}] Providing access token ${token} to ${requestBody.usr}.`);
 			console.log(`Real token: ${token}, Fake Token: ${getHash(token)}`);
 			console.log(`Real Token decoded: ${base64decode(token)}`);
-			resolve(token);
+			resolve({ "token": token, "fakeToken": fakeToken});
 
 		}); 
 	});

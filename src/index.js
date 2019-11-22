@@ -58,7 +58,7 @@ authApp.post('/auth', (req, res) => {
                 tk.provideToken(body).then( tokens => {
                     const sessionId = uuid();
                     // real Token is not used.
-                    res.end(JSON.stringify({"authenticated": true, "token": tokens["fakeToken"], "nickname": auth.nick, "session-id": sessionId }));
+                    res.end(JSON.stringify({"authenticated": true, "token": tokens["fakeToken"], "nickname": auth.nick, "session-id": sessionId, "expiresAt" : tokens["expiration"] }));
                     redisApi.writeValueInRedis(sessionId, tokens["fakeToken"]);
                 })
                 .catch(err => {

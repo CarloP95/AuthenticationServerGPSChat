@@ -2,6 +2,8 @@ const dbApi    = require('./Database/db.js');
 const authApp  = (require('express'))();
 const parser   = require('body-parser').json();
 const tk       = require('./Authentication/auth.js');
+const redisApi = require('./Redis/redis.js');
+const uuid     = require('uuid/v4');
 
 const port     = process.env.PORT || 3000;
 
@@ -54,7 +56,9 @@ authApp.post('/auth', (req, res) => {
 
             if (auth.authenticated)
                 tk.provideToken(body).then( token => {
-                    res.end(JSON.stringify({"authenticated": true, "token": token, "nickname": auth.nick }));
+                    const sessionId = uuid();
+                    res.end(JSON.stringify({"authenticated": true, "token": token, "nickname": auth.nick, "session-id": sessionId }));
+                    redisApi.writeValueInRedis(sessionId, token);
                 })
                 .catch(err => {
                     console.log(err);

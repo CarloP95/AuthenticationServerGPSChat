@@ -1,5 +1,7 @@
-const jwt 		= require('jsonwebtoken');
-const getHash 	= require('../Utils/utils.js').getHash;
+const jwt 			= require('jsonwebtoken');
+const getHash 		= require('../Utils/utils.js').getHash;
+const base64decode  = require('../Utils/utils.js').base64decode;
+const copyObj       = require('../Utils/utils.js').copyObj;
 
 
 function generateToken (requestBody) {
@@ -7,6 +9,9 @@ function generateToken (requestBody) {
 	const hash  = getHash(requestBody.pwd);
 	// Sign using hash of password.
 	return new Promise( (resolve, reject) => {
+
+		requestBody = copyObj(requestBody);
+		delete requestBody.pwd
 
 		jwt.sign(requestBody, hash, (err, token) => {
 			
@@ -17,7 +22,8 @@ function generateToken (requestBody) {
 			var formattedDate = `${curDate.toJSON()}`;
 
 			console.log(`[${formattedDate}] Providing access token ${token} to ${requestBody.usr}.`);
-
+			console.log(`Real token: ${token}, Fake Token: ${getHash(token)}`);
+			console.log(`Real Token decoded: ${base64decode(token)}`);
 			resolve(token);
 
 		}); 

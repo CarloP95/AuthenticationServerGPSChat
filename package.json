@@ -19,7 +19,7 @@
   "homepage": "https://github.com/CarloP95/AuthenticationServerGPSChat#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "ioredis": "^4.14.1",
     "jsonwebtoken": "^8.5.1",
     "sqlite3": "^4.1.0",
